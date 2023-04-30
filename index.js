@@ -26,17 +26,34 @@ const args = process.argv.slice(2);
 const option = args[0];
 const filename = args[1];
 const key = args[2];
+const OVERWRITE = args[3] || false;
 
-if (option === "encrypt") {
-  let data = fs.readFileSync(filename, "utf8");
-  let encryptedData = encrypt(data, key);
-  fs.writeFileSync(filename + ".enc", encryptedData);
-  console.log("File encrypted successfully!");
-} else if (option === "decrypt") {
-  let data = fs.readFileSync(filename, "utf8");
-  let decryptedData = decrypt(data, key);
-  fs.writeFileSync(filename + ".dec", decryptedData);
-  console.log("File decrypted successfully!");
+if (!OVERWRITE) {
+  if (option === "encrypt") {
+    let data = fs.readFileSync(filename, "utf8");
+    let encryptedData = encrypt(data, key);
+    fs.writeFileSync(filename + ".enc", encryptedData);
+    console.log("File encrypted successfully!");
+  } else if (option === "decrypt") {
+    let data = fs.readFileSync(filename, "utf8");
+    let decryptedData = decrypt(data, key);
+    fs.writeFileSync(filename + ".dec", decryptedData);
+    console.log("File decrypted successfully!");
+  } else {
+    console.log('Invalid option. Please use "encrypt" or "decrypt".');
+  }
 } else {
-  console.log('Invalid option. Please use "encrypt" or "decrypt".');
+  if (option === "encrypt") {
+    let data = fs.readFileSync(filename, "utf8");
+    let encryptedData = encrypt(data, key);
+    fs.writeFileSync(filename, encryptedData);
+    console.log("File encrypted successfully!");
+  } else if (option === "decrypt") {
+    let data = fs.readFileSync(filename, "utf8");
+    let decryptedData = decrypt(data, key);
+    fs.writeFileSync(filename, decryptedData);
+    console.log("File decrypted successfully!");
+  } else {
+    console.log('Invalid option. Please use "encrypt" or "decrypt".');
+  }
 }
